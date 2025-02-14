@@ -26,7 +26,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'currentUser'])
+    ...mapGetters(['isAuthenticated', 'currentUserId'])
   },
   methods: {
     ...mapActions(['logout']),
@@ -34,8 +34,8 @@ export default {
       this.$router.push({ name: route });
     },
     navigateToUserDetails() {
-      if (this.currentUser && this.currentUser.id) {
-        this.$router.push({ name: 'user-details', params: { id: this.currentUser.id } });
+      if (this.currentUserId) {
+        this.$router.push({ name: 'user-details', params: { id: this.currentUserId } });
       } else {
         this.errorMessage = 'User ID is missing.';
       }

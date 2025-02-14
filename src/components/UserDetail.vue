@@ -15,14 +15,27 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import axios from 'axios';
 
 export default {
   name: 'UserDetail',
-  computed: {
-    ...mapGetters(['currentUser']),
-    user() {
-      return this.currentUser;
+  data() {
+    return {
+      user: null
+    };
+  },
+  created() {
+    this.fetchUser();
+  },
+  methods: {
+    async fetchUser() {
+      const userId = this.$route.params.id;
+      try {
+        const response = await axios.get(`/api/users/${userId}`);
+        this.user = response.data;
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
     }
   }
 };

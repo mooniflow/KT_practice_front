@@ -3,7 +3,7 @@
     <h1>User List</h1>
     <ul>
       <li v-for="user in users" :key="user.id" class="user-item">
-        <span>{{ user.username }} - {{ user.email }}</span>
+<span>{{ user.username }} - {{ user.email }}</span>
         <router-link :to="{ name: 'UserDetail', params: { id: user.id } }" class="view-details">View Details</router-link>
       </li>
     </ul>
@@ -48,7 +48,7 @@ export default {
 h1 {
   font-size: 2em;
   margin-bottom: 20px;
-  text-align: center;
+text-align: center;
 }
 
 ul {

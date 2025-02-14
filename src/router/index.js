@@ -3,6 +3,7 @@ import Home from '../views/Home.vue';
 import LoginView from '../views/LoginView.vue';
 import SignupView from '../views/SignupView.vue';
 import UserDetail from '../components/UserDetail.vue';
+import UserList from '../components/UserList.vue';
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/user-details/:id',
     name: 'user-details',
     component: UserDetail
+  },
+  {
+    path: '/users',
+    name: 'user-list',
+    component: UserList
   }
 ];
 
