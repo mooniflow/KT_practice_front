@@ -99,6 +99,7 @@ input {
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   box-sizing: border-box;
+  color: black;
 }
 
 button {

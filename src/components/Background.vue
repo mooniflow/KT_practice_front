@@ -9,10 +9,10 @@
         <button @click="navigateTo('home')" class="nav-title">KT Pet care</button>
       </div>
       <div class="nav-right">
-        <button v-if="!isAuthenticated" @click="navigateTo('login')">Sign in</button>
-        <button v-if="!isAuthenticated" @click="navigateTo('signup')">Sign up</button>
-        <button v-if="isAuthenticated" @click="navigateToUserDetails">User Details</button>
-        <button v-if="isAuthenticated" @click="logout">Log out</button>
+        <button v-if="!isAuthenticated" @click="navigateTo('login')" class="nav-button">Sign in</button>
+        <button v-if="!isAuthenticated" @click="navigateTo('signup')" class="nav-button">Sign up</button>
+        <button v-if="isAuthenticated" @click="navigateToUserDetails" class="nav-button">User Details</button>
+        <button v-if="isAuthenticated" @click="logout" class="nav-button">Log out</button>
       </div>
     </nav>
 
@@ -119,7 +119,7 @@ export default {
   align-items: center;
 }
 
-.nav-right button {
+.nav-button {
   margin-left: 15px;
   font-size: 16px;
   color: white;
@@ -129,7 +129,7 @@ export default {
   transition: color 0.3s ease;
 }
 
-.nav-right button:hover {
+.nav-button:hover {
   color: rgba(255, 255, 255, 0.8);
 }
 

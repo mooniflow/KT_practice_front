@@ -5,11 +5,11 @@
       <form @submit.prevent="handleLogin">
         <div class="form-group mb-4">
           <label for="username" class="block text-gray-700">Username:</label>
-          <input type="text" id="username" v-model="username" class="w-full p-2 border rounded" required />
+          <input type="text" id="username" v-model="username" class="input" required />
         </div>
         <div class="form-group mb-4">
           <label for="password" class="block text-gray-700">Password:</label>
-          <input type="password" id="password" v-model="password" class="w-full p-2 border rounded" required />
+          <input type="password" id="password" v-model="password" class="input" required />
         </div>
         <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Login</button>
         <p v-if="errorMessage" class="error text-red-500 text-center mt-4">{{ errorMessage }}</p>
@@ -57,6 +57,10 @@ export default {
 .login-form {
   max-width: 400px;
   width: 100%;
+}
+
+.input {
+  color: black;
 }
 
 .error {

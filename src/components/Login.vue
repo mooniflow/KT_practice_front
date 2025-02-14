@@ -4,7 +4,7 @@
     <form @submit.prevent="handleLogin">
       <div class="form-group">
         <label for="username">Username:</label>
-        <input type="text" id="username" v-model="username" required />
+        <input type="text" class="username-input" id="username" v-model="username" required />
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
@@ -64,12 +64,14 @@ label {
   color: #666666;
 }
 
-input {
+.username-input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #cccccc;
   border-radius: 5px;
   box-sizing: border-box;
+  color: #333333;
+  background-color: #f9f9f9;
 }
 
 button {
