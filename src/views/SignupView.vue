@@ -1,16 +1,18 @@
 <template>
-  <div class="signup-view">
+  <Background>
     <Signup @signup="handleSignup" />
-  </div>
+  </Background>
 </template>
 
 <script>
 import Signup from '@/components/Signup.vue';
+import Background from '@/components/Background.vue';
 import { mapActions } from 'vuex';
 
 export default {
   components: {
-    Signup
+    Signup,
+    Background
   },
   methods: {
     ...mapActions(['signup']),
