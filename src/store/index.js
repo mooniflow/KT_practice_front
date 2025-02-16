@@ -28,6 +28,7 @@ export default createStore({
     },
     async fetchUserDetail({ commit }, userId) {
       try {
+        console.log('Fetching user detail for ID:', userId);
         const response = await axios.get(`/api/users/${userId}`);
         commit('SET_CURRENT_USER', response.data);
         return response.data;
@@ -49,6 +50,15 @@ export default createStore({
           commit('SET_CURRENT_USER_ID', response.data);
         });
     },
+    async deleteUserAccount({ commit }, userId) {
+      try {
+        await axios.delete(`/api/users/${userId}`);
+        commit('CLEAR_CURRENT_USER_ID');
+      } catch (error) {
+        console.error('회원탈퇴 실패:', error);
+        throw error;
+      }
+    }
   },
   getters: {
     isAuthenticated: state => !!state.currentUserId,

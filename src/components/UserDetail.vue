@@ -40,6 +40,8 @@
           <span class="info-value">{{ user.address }}</span>
         </div>
       </div>
+      <button class="action-button" @click="editProfile">회원정보 수정</button>
+      <button class="action-button" @click="deleteAccount">회원탈퇴</button>
     </div>
   </div>
 </template>
@@ -62,7 +64,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchUserDetail']),
+    ...mapActions(['fetchUserDetail', 'deleteUserAccount']),
     async loadUserData() {
       try {
         this.loading = true;
@@ -77,6 +79,19 @@ export default {
         this.error = '사용자 정보를 불러오는데 실패했습니다.';
       } finally {
         this.loading = false;
+      }
+    },
+    editProfile() {
+      this.$router.push({ name: 'edit-profile', params: { id: this.user.id } });
+    },
+    async deleteAccount() {
+      try {
+        await this.deleteUserAccount(this.user.id);
+        alert('회원탈퇴가 완료되었습니다.');
+        this.$router.push({ name: 'home' });
+      } catch (error) {
+        console.error('회원탈퇴 실패:', error);
+        alert('회원탈퇴에 실패했습니다.');
       }
     }
   },
@@ -197,5 +212,21 @@ h2 {
   font-size: 32px;
   margin-bottom: 16px;
   color: #FF4B4B;
+}
+
+.action-button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #005bb5;
 }
 </style>

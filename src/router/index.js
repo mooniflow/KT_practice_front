@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue';
 import SignupView from '../views/SignupView.vue';
 import UserDetail from '../components/UserDetail.vue';
 import UserList from '../components/UserList.vue';
+import EditProfile from '../components/EditProfile.vue';
 
 const routes = [
   {
@@ -24,12 +25,17 @@ const routes = [
   {
     path: '/user-details/:id',
     name: 'user-details',
-    component: () => import('../views/UserDetailView.vue')
+    component: UserDetail
   },
   {
     path: '/users',
     name: 'user-list',
     component: UserList
+  },
+  {
+    path: '/edit-profile/:id',
+    name: 'edit-profile',
+    component: EditProfile
   }
 ];
 
