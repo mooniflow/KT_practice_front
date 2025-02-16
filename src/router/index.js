@@ -23,7 +23,7 @@ const routes = [
     component: SignupView
   },
   {
-    path: '/user-details/:id',
+    path: '/users/:id',
     name: 'user-details',
     component: UserDetail
   },
