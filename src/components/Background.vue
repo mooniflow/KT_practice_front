@@ -1,24 +1,44 @@
 <template>
   <div class="background-container">
-    <!-- 배경 이미지 -->
-    <img :src="currentImage" alt="Background" class="background-image" />
-
-    <!-- 네비게이션 바 -->
-    <nav class="navbar">
-      <div class="nav-left">
+    <div class="left-sidebar">
+      <div class="logo-section">
         <button @click="navigateTo('home')" class="nav-title">KT Pet care</button>
       </div>
-      <div class="nav-right">
-        <button v-if="!isAuthenticated" @click="navigateTo('login')" class="nav-button">Sign in</button>
-        <button v-if="!isAuthenticated" @click="navigateTo('signup')" class="nav-button">Sign up</button>
-        <button v-if="isAuthenticated" @click="navigateToUserDetails" class="nav-button">User Details</button>
-        <button v-if="isAuthenticated" @click="logout" class="nav-button">Log out</button>
+      <div class="menu-section">
+        <button v-if="!isAuthenticated" @click="navigateTo('login')" class="menu-button">
+          <span class="icon">🔑</span>
+          <span>Sign in</span>
+        </button>
+        <button v-if="!isAuthenticated" @click="navigateTo('signup')" class="menu-button">
+          <span class="icon">📝</span>
+          <span>Sign up</span>
+        </button>
+        <button v-if="isAuthenticated" @click="navigateToUserDetails" class="menu-button">
+          <span class="icon">👤</span>
+          <span>User Details</span>
+        </button>
+        <button v-if="isAuthenticated" @click="logout" class="menu-button">
+          <span class="icon">🚪</span>
+          <span>Log out</span>
+        </button>
       </div>
-    </nav>
-
-    <!-- 콘텐츠 삽입 부분 -->
-    <div class="content">
-      <slot></slot>
+    </div>
+    
+    <div class="main-content">
+      <div class="top-bar">
+        <div class="search-bar">
+          <input type="text" placeholder="Search..." />
+          <span class="search-icon">🔍</span>
+        </div>
+        <div class="user-profile">
+          <span class="notification-icon">🔔</span>
+          <span class="profile-image">👤</span>
+        </div>
+      </div>
+      
+      <div class="content-area">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -66,81 +86,116 @@ export default {
 </script>
 
 <style scoped>
-/* 🌟 전체 컨테이너 */
 .background-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* 🌟 배경 이미지 (네비게이션 바 아래로 가게 설정) */
-.background-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1; /* 네비게이션 바보다 뒤로 */
-}
-
-/* 🌟 네비게이션 바 (투명 & 블러 효과) */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-  background: rgba(255, 255, 255, 0.05); /* 더 높은 투명도 */
-  backdrop-filter: blur(10px); /* 블러 효과 */
-  z-index: 10; /* 배경보다 위 */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: 100vh;
+  background: #F7F9FB;
 }
 
-/* 🌟 네비게이션 버튼 스타일 */
+.left-sidebar {
+  width: 280px;
+  background: white;
+  padding: 24px;
+  border-right: 1px solid #EDF2F7;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.logo-section {
+  padding: 12px 0;
+}
+
 .nav-title {
   font-size: 24px;
-  font-weight: bold;
-  color: white;
-  cursor: pointer;
-}
-
-.nav-left {
-  display: flex;
-  align-items: center;
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-}
-
-.nav-button {
-  margin-left: 15px;
-  font-size: 16px;
-  color: white;
+  font-weight: 700;
+  color: #2B3674;
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.3s ease;
 }
 
-.nav-button:hover {
-  color: rgba(255, 255, 255, 0.8);
+.menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* 🌟 콘텐츠 영역 */
-.content {
+.menu-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  color: #2B3674;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.menu-button:hover {
+  background: #F6F8FD;
+  color: #4318FF;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.search-bar {
+  position: relative;
+  width: 300px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 12px 40px 12px 16px;
+  border: 1px solid #E0E5F2;
+  border-radius: 12px;
+  background: white;
+}
+
+.search-icon {
   position: absolute;
+  right: 16px;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  text-align: center;
-  z-index: 5;
+  transform: translateY(-50%);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.notification-icon, .profile-image {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.content-area {
+  flex: 1;
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 </style>
+
