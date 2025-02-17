@@ -5,22 +5,36 @@
         <button @click="navigateTo('home')" class="nav-title">KT Pet care</button>
       </div>
       <div class="menu-section">
-        <button v-if="!isAuthenticated" @click="navigateTo('login')" class="menu-button">
-          <span class="icon">🔑</span>
-          <span>Sign in</span>
-        </button>
-        <button v-if="!isAuthenticated" @click="navigateTo('signup')" class="menu-button">
-          <span class="icon">📝</span>
-          <span>Sign up</span>
-        </button>
-        <button v-if="isAuthenticated" @click="navigateToUserDetails" class="menu-button">
-          <span class="icon">👤</span>
-          <span>User Details</span>
-        </button>
-        <button v-if="isAuthenticated" @click="logout" class="menu-button">
-          <span class="icon">🚪</span>
-          <span>Log out</span>
-        </button>
+        <div class="button-container">
+          <button v-if="!isAuthenticated" @click="navigateTo('login')" class="menu-button">
+            <span class="icon">🔑</span>
+            <span>Sign in</span>
+          </button>
+          <button v-if="!isAuthenticated" @click="navigateTo('signup')" class="menu-button">
+            <span class="icon">📝</span>
+            <span>Sign up</span>
+          </button>
+          <button v-if="isAuthenticated" @click="navigateToUserDetails" class="menu-button">
+            <span class="icon">👤</span>
+            <span>User Details</span>
+          </button>
+          <button v-if="isAuthenticated" @click="logout" class="menu-button">
+            <span class="icon">🚪</span>
+            <span>Log out</span>
+          </button>
+          <button class="menu-button" @click="navigateTo('code-management')">
+            <span class="icon">📋</span>
+            <span>코드 관리</span>
+          </button>
+          <button class="menu-button" @click="onPayment">
+            <span class="icon">💳</span>
+            <span>결제하기</span>
+          </button>
+          <button v-if="isAuthenticated" @click="navigateTo('pet-management')" class="menu-button">
+            <span class="icon">🐾</span>
+            <span>반려동물 관리</span>
+          </button>
+        </div>
       </div>
     </div>
     
@@ -77,6 +91,9 @@ export default {
     },
     changeImage() {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
+    },
+    onPayment() {
+      // 결제 로직 추가
     }
   },
   mounted() {
@@ -121,23 +138,24 @@ export default {
   gap: 8px;
 }
 
-.menu-button {
+.button-container {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-button {
+  padding: 10px 20px;
+  color: #007bff;
   border: none;
-  background: transparent;
-  border-radius: 12px;
-  color: #2B3674;
-  font-weight: 500;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  text-align: left;
+  background-color: transparent;
 }
 
 .menu-button:hover {
-  background: #F6F8FD;
-  color: #4318FF;
+  background-color: #e0e0e0;
 }
 
 .icon {

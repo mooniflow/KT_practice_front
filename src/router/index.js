@@ -6,6 +6,11 @@ import UserDetail from '../components/UserDetail.vue';
 import UserList from '../components/UserList.vue';
 import EditProfile from '../components/EditProfile.vue';
 import CodeManagement from '../views/CodeManagement.vue';
+import ShoppingService from '@/views/ShoppingService.vue';
+import PaymentTest from '@/components/PaymentTest.vue';
+import ProductList from '../components/ProductList.vue';
+import Cart from '../components/Cart.vue';
+import ProductDetail from '../components/ProductDetail.vue';
 
 const routes = [
   {
@@ -42,6 +47,38 @@ const routes = [
     path: '/code-management',
     name: 'code-management',
     component: CodeManagement
+  },
+  {
+    path: '/shopping-service',
+    name: 'shopping-service',
+    component: ShoppingService
+  },
+  {
+    path: '/payment-test',
+    name: 'payment-test',
+    component: PaymentTest
+  },
+  {
+    path: '/products',
+    name: 'product-list',
+    component: ProductList
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: Cart
+  },
+  {
+    path: '/products/:id',
+    name: 'product-detail',
+    component: ProductDetail,
+    props: route => ({ productId: Number(route.params.id) })
+  },
+  {
+    path: '/pet-management',
+    name: 'pet-management',
+    component: () => import('@/components/PetManagement.vue'),
+    meta: { requiresAuth: true }
   }
 ];
 

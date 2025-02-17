@@ -5,6 +5,7 @@ export default createStore({
   state: {
     currentUserId: null,
     currentUser: null,
+    cart: []
   },
   mutations: {
     SET_CURRENT_USER_ID(state, userId) {
@@ -17,6 +18,18 @@ export default createStore({
       state.currentUserId = null;
       state.currentUser = null;
     },
+    ADD_TO_CART(state, item) {
+      const existingItem = state.cart.find(i => i.productId === item.productId);
+      if (existingItem) {
+        existingItem.quantity += item.quantity;
+        existingItem.totalPrice = (existingItem.quantity * existingItem.price).toFixed(2);
+      } else {
+        state.cart.push(item);
+      }
+    },
+    REMOVE_FROM_CART(state, productId) {
+      state.cart = state.cart.filter(item => item.productId !== productId);
+    }
   },
   actions: {
     login({ commit, dispatch }, { username, password }) {
@@ -60,6 +73,12 @@ export default createStore({
         console.error('회원탈퇴 실패:', error);
         throw error;
       }
+    },
+    addToCart({ commit }, item) {
+      commit('ADD_TO_CART', item);
+    },
+    removeFromCart({ commit }, productId) {
+      commit('REMOVE_FROM_CART', productId);
     }
   },
   getters: {

@@ -2,8 +2,7 @@
   <Background>
     <div class="home">
       <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-      <PaymentTest />
-      <button @click="navigateToCodeManagement">코드 관리</button>
+      <button @click="navigateToProductList">Shopping Service</button>
     </div>
   </Background>
 </template>
@@ -30,6 +29,9 @@ export default {
     ...mapActions(['logout']),
     navigateTo(route) {
       this.$router.push({ name: route });
+    },
+    navigateToProductList() {
+      this.$router.push({ name: 'product-list' });
     },
     navigateToUserDetails() {
       if (this.currentUserId) {
