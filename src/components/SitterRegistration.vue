@@ -6,65 +6,90 @@
       <div class="form-section">
         <h3>기본 정보</h3>
         <div class="form-group">
-          <label for="name">이름</label>
-          <input type="text" id="name" v-model="form.name" required>
+          <label>이름</label>
+          <input v-model="form.name" type="text" required>
         </div>
         <div class="form-group">
-          <label for="location">활동 지역</label>
-          <input type="text" id="location" v-model="form.location" required>
+          <label>연락처</label>
+          <input v-model="form.phone" type="tel" required>
+        </div>
+        <div class="form-group">
+          <label>위치</label>
+          <input v-model="form.location" type="text" required>
+        </div>
+        <div class="form-group">
+          <label>돌봄 가능 시간</label>
+          <div v-for="(time, index) in form.availableTimes" :key="index" class="time-range">
+            <input v-model="time.startTime" type="datetime-local" required>
+            <span>-</span>
+            <input v-model="time.endTime" type="datetime-local" required>
+            <button type="button" @click="removeTimeRange(index)">삭제</button>
+          </div>
+          <button type="button" @click="addTimeRange">시간대 추가</button>
+        </div>
+        <div class="form-group">
+          <label>시간당 요금</label>
+          <input v-model="form.price" type="number" required>
         </div>
       </div>
 
-      <!-- 자격 및 경험 섹션 -->
+      <!-- 자기소개 및 돌봄 경험 섹션 -->
       <div class="form-section">
-        <h3>자격 및 경험</h3>
+        <h3>자기소개 및 돌봄 경험</h3>
+        <div class="form-group">
+          <label>자기소개</label>
+          <textarea v-model="form.introduction" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>돌봄 경험</label>
+          <textarea v-model="form.experience" required></textarea>
+        </div>
+      </div>
+
+      <!-- 자격증 및 인증 섹션 -->
+      <div class="form-section">
+        <h3>자격증 및 인증</h3>
         <div class="form-group">
           <label>자격증</label>
-          <div class="certification-list">
-            <div v-for="(cert, index) in form.certifications" :key="index" class="certification-item">
-              <input type="text" v-model="form.certifications[index]">
-              <button type="button" @click="removeCertification(index)" class="remove-btn">삭제</button>
-            </div>
+          <div v-for="(cert, index) in form.certifications" :key="index">
+            <input v-model="cert.name" type="text" placeholder="자격증명">
+            <input v-model="cert.date" type="date" placeholder="취득일">
+            <button type="button" @click="removeCertification(index)">삭제</button>
           </div>
-          <button type="button" @click="addCertification" class="add-btn">자격증 추가</button>
+          <button type="button" @click="addCertification">자격증 추가</button>
         </div>
         <div class="form-group">
-          <label for="experience">경력 사항</label>
-          <textarea id="experience" v-model="form.experience" rows="3"></textarea>
+          <label>관련 인증서</label>
+          <input type="file" @change="handleCertificateUpload" multiple accept=".pdf,.jpg,.png">
         </div>
       </div>
 
-      <!-- 서비스 정보 섹션 -->
+      <!-- 서비스 선택 섹션 -->
       <div class="form-section">
-        <h3>서비스 정보</h3>
+        <h3>제공 가능한 서비스</h3>
         <div class="form-group">
-          <label>돌봄 가능한 반려동물 크기</label>
-          <select v-model="form.petSize">
-            <option value="1">소형견 (10kg 이하)</option>
-            <option value="2">중형견 (10kg~25kg)</option>
-            <option value="3">대형견 (25kg 초과)</option>
-          </select>
+          <label>
+            <input type="checkbox" v-model="form.services.walk"> 산책
+          </label>
+          <label>
+            <input type="checkbox" v-model="form.services.visit"> 방문 돌봄
+          </label>
+          <label>
+            <input type="checkbox" v-model="form.services.care"> 위탁 돌봄
+          </label>
         </div>
         <div class="form-group">
-          <label>제공 가능한 서비스</label>
-          <input type="text" v-model="form.services" placeholder="산책, 방문 돌봄, 위탁 돌봄 등">
+          <h4>돌봄 가능한 반려동물 크기</h4>
+          <label>
+            <input type="checkbox" v-model="form.petSizes.small"> 소형견(10kg이하)
+          </label>
+          <label>
+            <input type="checkbox" v-model="form.petSizes.medium"> 중형견(10kg~25kg)
+          </label>
+          <label>
+            <input type="checkbox" v-model="form.petSizes.large"> 대형견(25kg초과)
+          </label>
         </div>
-        <div class="form-group">
-          <label>서비스 요금 (시간당)</label>
-          <input type="number" v-model="form.price" min="0">
-        </div>
-      </div>
-
-      <!-- 활동 가능 시간 섹션 -->
-      <div class="form-section">
-        <h3>활동 가능 시간</h3>
-        <div v-for="(timeRange, index) in form.availableTimes" :key="index" class="time-range">
-          <input type="datetime-local" v-model="timeRange.startTime">
-          <span>~</span>
-          <input type="datetime-local" v-model="timeRange.endTime">
-          <button type="button" @click="removeTimeRange(index)" class="remove-btn">삭제</button>
-        </div>
-        <button type="button" @click="addTimeRange" class="add-btn">시간대 추가</button>
       </div>
 
       <button type="submit" class="submit-btn">등록하기</button>
@@ -81,11 +106,21 @@ export default {
     return {
       form: {
         name: '',
+        phone: '',
         location: '',
         certifications: [],
         experience: '',
-        services: '',
-        petSize: 1,
+        introduction: '',
+        services: {
+          walk: false,
+          visit: false,
+          care: false
+        },
+        petSizes: {
+          small: false,
+          medium: false,
+          large: false
+        },
         price: 0,
         availableTimes: [],
         isActive: true
@@ -97,7 +132,10 @@ export default {
   },
   methods: {
     addCertification() {
-      this.form.certifications.push('');
+      this.form.certifications.push({
+        name: '',
+        date: ''
+      });
     },
     removeCertification(index) {
       this.form.certifications.splice(index, 1);
@@ -118,10 +156,18 @@ export default {
           return;
         }
 
-        const response = await axios.post('http://localhost:8080/api/pet-sitters', {
+        const formData = {
           ...this.form,
-          userId: this.currentUser.id
-        });
+          userId: this.currentUser.id,
+          availableTimes: this.form.availableTimes.map(time => ({
+            startTime: new Date(time.startTime).toISOString(),
+            endTime: new Date(time.endTime).toISOString()
+          })),
+          services: Object.keys(this.form.services).filter(key => this.form.services[key]).join(','),
+          petSizes: Object.keys(this.form.petSizes).filter(key => this.form.petSizes[key]).join(',')
+        };
+
+        const response = await axios.post('http://localhost:8080/api/pet-sitters', formData);
 
         alert('펫시터 등록이 완료되었습니다.');
         this.$router.push('/sitter-profile');
@@ -129,79 +175,10 @@ export default {
         console.error('펫시터 등록 실패:', error);
         alert('등록 중 오류가 발생했습니다. 다시 시도해주세요.');
       }
+    },
+    handleCertificateUpload(event) {
+      // Implementation of handleCertificateUpload method
     }
   }
 };
 </script>
-
-<style scoped>
-.sitter-registration-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.form-section {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.time-range {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.add-btn, .remove-btn {
-  padding: 5px 10px;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-}
-
-.add-btn {
-  background: #4CAF50;
-  color: white;
-}
-
-.remove-btn {
-  background: #f44336;
-  color: white;
-}
-
-.submit-btn {
-  width: 100%;
-  padding: 12px;
-  background: #2196F3;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.submit-btn:hover {
-  background: #1976D2;
-}
-</style>

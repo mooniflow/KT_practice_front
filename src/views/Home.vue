@@ -3,6 +3,9 @@
     <div class="home">
       <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
       <button @click="navigateToProductList">Shopping Service</button>
+      <button @click="navigateTo('pet-sitting')" class="service-btn">
+        Pet Sitting Service
+      </button>
     </div>
   </Background>
 </template>

@@ -11,6 +11,13 @@ import PaymentTest from '@/components/PaymentTest.vue';
 import ProductList from '../components/ProductList.vue';
 import Cart from '../components/Cart.vue';
 import ProductDetail from '../components/ProductDetail.vue';
+import PetSitting from '@/components/PetSitting.vue';
+import SitterListArea from '@/components/SitterListArea.vue';
+import SitterDetailPage from '@/components/SitterDetailPage.vue';
+
+import BookingChat from '@/components/BookingChat.vue';
+import BookingRequests from '@/components/BookingRequests.vue';
+import ApprovedBookings from '@/components/ApprovedBookings.vue';
 
 const routes = [
   {
@@ -83,27 +90,17 @@ const routes = [
   {
     path: '/sitter-registration',
     name: 'sitter-registration',
-    component: () => import('@/components/sitter/SitterRegistration.vue'),
+    component: () => import('@/components/SitterRegistration.vue'),
     meta: { requiresAuth: true }
   },
   {
     path: '/my-sitter-profile',
     name: 'my-sitter-profile',
-    component: () => import('@/components/sitter/MySitterProfile.vue'),
+    component: () => import('@/components/MySitterProfile.vue'),
     meta: { requiresAuth: true }
   },
-  {
-    path: '/sitter-schedule',
-    name: 'sitter-schedule',
-    component: () => import('@/components/sitter/SitterSchedule.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/sitter-bookings',
-    name: 'sitter-bookings',
-    component: () => import('@/components/sitter/SitterBookings.vue'),
-    meta: { requiresAuth: true }
-  },
+  
+  
   {
     path: '/sitter-list',
     name: 'sitter-list',
@@ -119,6 +116,41 @@ const routes = [
     path: '/sitter-management',
     name: 'sitter-management',
     component: () => import('@/components/SitterManagement.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/pet-sitting',
+    name: 'pet-sitting',
+    component: PetSitting
+  },
+  {
+    path: '/sitter-list-area',
+    name: 'sitter-list-area',
+    component: SitterListArea
+  },
+  {
+    path: '/sitter-detail-page/:id',
+    name: 'sitter-detail-page',
+    component: SitterDetailPage,
+    props: true
+  },
+  
+ 
+  {
+    path: '/booking-chat',
+    name: 'booking-chat',
+    component: BookingChat
+  },
+  {
+    path: '/booking-requests',
+    name: 'booking-requests',
+    component: BookingRequests,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/approved-bookings',
+    name: 'approved-bookings',
+    component: ApprovedBookings,
     meta: { requiresAuth: true }
   }
 ];
