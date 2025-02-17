@@ -118,13 +118,24 @@
       },
       async fetchUserPets() {
         try {
-          const response = await axios.get(`http://localhost:8080/api/pets/user/${this.currentUser.id}`);
-          this.userPets = response.data;
-          if (this.userPets.length > 0) {
-            this.selectedPetId = this.userPets[0].id;
+          const response = await axios.get(`http://localhost:8080/pets`, {
+            params: {
+              userId: this.currentUser.id
+            }
+          });
+          
+          if (response.data) {
+            this.userPets = response.data;
+            if (this.userPets.length > 0) {
+              this.selectedPetId = this.userPets[0].id;
+            } else {
+              alert('등록된 반려동물이 없습니다. 반려동물을 먼저 등록해주세요.');
+              this.$router.push('/pet-registration');
+            }
           }
         } catch (error) {
           console.error('반려동물 목록 조회 실패:', error);
+          this.userPets = [];
         }
       },
       async submitBooking() {
