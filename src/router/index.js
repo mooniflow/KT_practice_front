@@ -79,6 +79,47 @@ const routes = [
     name: 'pet-management',
     component: () => import('@/components/PetManagement.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/sitter-registration',
+    name: 'sitter-registration',
+    component: () => import('@/components/sitter/SitterRegistration.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/my-sitter-profile',
+    name: 'my-sitter-profile',
+    component: () => import('@/components/sitter/MySitterProfile.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/sitter-schedule',
+    name: 'sitter-schedule',
+    component: () => import('@/components/sitter/SitterSchedule.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/sitter-bookings',
+    name: 'sitter-bookings',
+    component: () => import('@/components/sitter/SitterBookings.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/sitter-list',
+    name: 'sitter-list',
+    component: () => import('@/components/SitterList.vue')
+  },
+  {
+    path: '/sitter-detail/:id',
+    name: 'sitter-detail',
+    component: () => import('@/components/SitterDetail.vue'),
+    props: route => ({ sitterId: Number(route.params.id) })
+  },
+  {
+    path: '/sitter-management',
+    name: 'sitter-management',
+    component: () => import('@/components/SitterManagement.vue'),
+    meta: { requiresAuth: true }
   }
 ];
 

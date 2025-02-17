@@ -18,6 +18,10 @@
             <span class="icon">👤</span>
             <span>User Details</span>
           </button>
+          <button v-if="isAuthenticated" @click="navigateTo('sitter-management')" class="menu-button">
+            <span class="icon">👨‍💼</span>
+            <span>펫시터 관리</span>
+          </button>
           <button v-if="isAuthenticated" @click="logout" class="menu-button">
             <span class="icon">🚪</span>
             <span>Log out</span>
