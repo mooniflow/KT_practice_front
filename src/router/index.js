@@ -5,6 +5,7 @@ import SignupView from '../views/SignupView.vue';
 import UserDetail from '../components/UserDetail.vue';
 import UserList from '../components/UserList.vue';
 import EditProfile from '../components/EditProfile.vue';
+import CodeManagement from '../views/CodeManagement.vue';
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/edit-profile/:id',
     name: 'edit-profile',
     component: EditProfile
+  },
+  {
+    path: '/code-management',
+    name: 'code-management',
+    component: CodeManagement
   }
 ];
 

@@ -22,14 +22,16 @@ export default createStore({
     login({ commit, dispatch }, { username, password }) {
       return axios.post('/api/users/login', { username, password })
         .then(response => {
-          commit('SET_CURRENT_USER_ID', response.data);
-          return dispatch('fetchUserDetail', response.data);
+          const userId = response.data.id || response.data;
+          commit('SET_CURRENT_USER_ID', userId);
+          return dispatch('fetchUserDetail', userId);
         });
     },
     async fetchUserDetail({ commit }, userId) {
       try {
         console.log('Fetching user detail for ID:', userId);
-        const response = await axios.get(`/api/users/${userId}`);
+        const id = userId?.id || userId;
+        const response = await axios.get(`http://localhost:8080/users/${id}`);
         commit('SET_CURRENT_USER', response.data);
         return response.data;
       } catch (error) {
