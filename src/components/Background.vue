@@ -30,10 +30,6 @@
             <span class="icon">📋</span>
             <span>코드 관리</span>
           </button>
-          <button class="menu-button" @click="onPayment">
-            <span class="icon">💳</span>
-            <span>결제하기</span>
-          </button>
           <button v-if="isAuthenticated" @click="navigateTo('pet-management')" class="menu-button">
             <span class="icon">🐾</span>
             <span>반려동물 관리</span>

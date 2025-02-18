@@ -189,6 +189,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
+    max-height: 100vh;
+    overflow-y: auto;
   }
   
   .profile-section, .booking-section, .available-times {

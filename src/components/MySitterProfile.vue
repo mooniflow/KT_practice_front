@@ -7,11 +7,6 @@
         <div class="form-section">
           <h3>기본 정보</h3>
           <div class="form-group">
-            <label>프로필 이미지</label>
-            <input type="file" @change="handleImageUpload" accept="image/*">
-            <img v-if="imagePreview" :src="imagePreview" class="image-preview" alt="프로필 이미지">
-          </div>
-          <div class="form-group">
             <label>이름</label>
             <input v-model="sitter.name" type="text" required>
           </div>
@@ -22,6 +17,12 @@
           <div class="form-group">
             <label>위치</label>
             <input v-model="sitter.location" type="text" required>
+          </div>
+          <div class="form-group">
+            <label>활동 상태</label>
+            <label>
+              <input type="checkbox" v-model="sitter.isActive"> 활동 중
+            </label>
           </div>
           <div class="form-group">
             <label>돌봄 가능 시간</label>
@@ -52,21 +53,15 @@
           </div>
         </div>
 
-        <!-- 자격증 및 인증 섹션 -->
+        <!-- 자격증 섹션 -->
         <div class="form-section">
-          <h3>자격증 및 인증</h3>
+          <h3>자격증</h3>
           <div class="form-group">
-            <label>자격증</label>
             <div v-for="(cert, index) in sitter.certifications" :key="index">
-              <input v-model="cert.name" type="text" placeholder="자격증명">
-              <input v-model="cert.date" type="date" placeholder="취득일">
+              <input v-model="sitter.certifications[index]" type="text" placeholder="자격증 URL">
               <button type="button" @click="removeCertification(index)">삭제</button>
             </div>
-            <button type="button" @click="addCertification">자격증 추가</button>
-          </div>
-          <div class="form-group">
-            <label>관련 인증서</label>
-            <input type="file" @change="handleCertificateUpload" multiple accept=".pdf,.jpg,.png">
+            <button type="button" @click="addCertification">자격증 URL 추가</button>
           </div>
         </div>
 
@@ -115,7 +110,6 @@ export default {
         name: '',
         phone: '',
         location: '',
-        profileImage: null,
         certifications: [],
         experience: '',
         introduction: '',
@@ -130,9 +124,9 @@ export default {
           large: false
         },
         price: 0,
+        isActive: false,
         availableTimes: []
-      },
-      imagePreview: null
+      }
     };
   },
   computed: {
@@ -175,7 +169,6 @@ export default {
               large: petSizesArray.includes('LARGE')
             }
           };
-          this.imagePreview = this.sitter.profileImage;
         } else {
           this.$router.push('/sitter-registration');
         }
@@ -183,29 +176,40 @@ export default {
         console.error('프로필 조회 실패:', error);
       }
     },
-    handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.imagePreview = URL.createObjectURL(file);
-        this.sitter.profileImage = file;
-      }
-    },
     async updateProfile() {
       try {
+        if (!this.currentUser) {
+          alert('로그인이 필요합니다.');
+          return;
+        }
+
         const formData = {
-          ...this.sitter,
+          id: this.sitter.id,
           userId: this.currentUser.id,
+          name: this.sitter.name,
+          phone: this.sitter.phone,
+          location: this.sitter.location,
+          certifications: this.sitter.certifications,
+          experience: this.sitter.experience,
+          introduction: this.sitter.introduction,
           services: Object.keys(this.sitter.services)
             .filter(key => this.sitter.services[key])
             .join(','),
           petSize: Object.keys(this.sitter.petSizes)
             .filter(key => this.sitter.petSizes[key])
             .map(size => size.toUpperCase())
-            .join(',')
+            .join(','),
+          price: this.sitter.price,
+          isActive: this.sitter.isActive,
+          availableTimes: this.sitter.availableTimes.map(time => ({
+            startTime: time.startTime,
+            endTime: time.endTime
+          }))
         };
 
         await axios.put(`http://localhost:8080/api/pet-sitters/${this.sitter.id}`, formData);
         alert('프로필이 수정되었습니다.');
+        await this.fetchSitterProfile();
       } catch (error) {
         console.error('프로필 수정 실패:', error);
         alert('프로필 수정에 실패했습니다.');
@@ -221,16 +225,10 @@ export default {
       this.sitter.availableTimes.splice(index, 1);
     },
     addCertification() {
-      this.sitter.certifications.push({
-        name: '',
-        date: ''
-      });
+      this.sitter.certifications.push('');
     },
     removeCertification(index) {
       this.sitter.certifications.splice(index, 1);
-    },
-    handleCertificateUpload(event) {
-      // 인증서 파일 처리 로직
     }
   }
 };
@@ -241,6 +239,8 @@ export default {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .profile-content {

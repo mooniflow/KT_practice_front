@@ -50,17 +50,12 @@
       <div class="form-section">
         <h3>자격증 및 인증</h3>
         <div class="form-group">
-          <label>자격증</label>
-          <div v-for="(cert, index) in form.certifications" :key="index">
-            <input v-model="cert.name" type="text" placeholder="자격증명">
-            <input v-model="cert.date" type="date" placeholder="취득일">
+          <label>자격증 URL</label>
+          <div v-for="(url, index) in form.certifications" :key="index">
+            <input v-model="form.certifications[index]" type="text" placeholder="자격증 URL">
             <button type="button" @click="removeCertification(index)">삭제</button>
           </div>
-          <button type="button" @click="addCertification">자격증 추가</button>
-        </div>
-        <div class="form-group">
-          <label>관련 인증서</label>
-          <input type="file" @change="handleCertificateUpload" multiple accept=".pdf,.jpg,.png">
+          <button type="button" @click="addCertification">자격증 URL 추가</button>
         </div>
       </div>
 
@@ -122,8 +117,8 @@ export default {
           large: false
         },
         price: 0,
-        availableTimes: [],
-        isActive: true
+        isActive: true,
+        availableTimes: []
       }
     };
   },
@@ -132,10 +127,7 @@ export default {
   },
   methods: {
     addCertification() {
-      this.form.certifications.push({
-        name: '',
-        date: ''
-      });
+      this.form.certifications.push('');
     },
     removeCertification(index) {
       this.form.certifications.splice(index, 1);
@@ -157,15 +149,24 @@ export default {
         }
 
         const formData = {
-          ...this.form,
           userId: this.currentUser.id,
-          availableTimes: this.form.availableTimes.map(time => ({
-            startTime: new Date(time.startTime).toISOString(),
-            endTime: new Date(time.endTime).toISOString()
-          })),
+          name: this.form.name,
+          phone: this.form.phone,
+          location: this.form.location,
+          certifications: this.form.certifications,
+          experience: this.form.experience,
+          introduction: this.form.introduction,
           services: Object.keys(this.form.services).filter(key => this.form.services[key]).join(','),
-          petSizes: Object.keys(this.form.petSizes).filter(key => this.form.petSizes[key]).join(',')
+          petSize: Object.keys(this.form.petSizes)
+            .filter(key => this.form.petSizes[key])
+            .map(size => size.toUpperCase())
+            .join(','),
+          price: this.form.price,
+          isActive: this.form.isActive,
+          availableTimes: this.form.availableTimes
         };
+
+        console.log('Form Data:', formData);
 
         const response = await axios.post('http://localhost:8080/api/pet-sitters', formData);
 
@@ -175,10 +176,25 @@ export default {
         console.error('펫시터 등록 실패:', error);
         alert('등록 중 오류가 발생했습니다. 다시 시도해주세요.');
       }
-    },
-    handleCertificateUpload(event) {
-      // Implementation of handleCertificateUpload method
     }
   }
 };
 </script>
+
+<style scoped>
+.sitter-registration-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.form-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+</style>

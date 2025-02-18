@@ -31,6 +31,7 @@ import axios from 'axios';
 import { mapState } from 'vuex';
 
 export default {
+  name: 'MyBookings',
   data() {
     return {
       bookings: []
@@ -42,9 +43,13 @@ export default {
   async created() {
     if (this.currentUser) {
       await this.fetchUserBookings();
-      const script = document.createElement('script');
-      script.src = 'https://cdn.iamport.kr/v1/iamport.js';
-      document.head.appendChild(script);
+      // iamport 스크립트 로드
+      if (!window.IMP) {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.iamport.kr/v1/iamport.js';
+        script.async = true;
+        document.head.appendChild(script);
+      }
     } else {
       this.$router.push('/login');
     }
@@ -53,6 +58,7 @@ export default {
     async fetchUserBookings() {
       try {
         const response = await axios.get(`http://localhost:8080/api/bookings/user/${this.currentUser.id}`);
+        console.log('서버 응답 데이터:', response.data);
         this.bookings = response.data;
       } catch (error) {
         console.error('예약 내역 조회 실패:', error);
@@ -63,6 +69,11 @@ export default {
       return new Date(date).toLocaleDateString();
     },
     onPayment(booking) {
+      if (!window.IMP) {
+        alert('결제 모듈을 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
+
       const { IMP } = window;
       IMP.init('imp85533822');
 
@@ -86,11 +97,24 @@ export default {
       
       if (success) {
         try {
-          await axios.put(`http://localhost:8080/api/bookings/${bookingId}/payment`, {
+          const updateResponse = await axios.put(`http://localhost:8080/api/bookings/${bookingId}/payment`, {
             paymentStatus: 'paid'
           });
-          await this.fetchUserBookings();
-          alert('결제가 완료되었습니다.');
+          
+          if (updateResponse.status === 200) {
+            // 로컬 상태 즉시 업데이트
+            const bookingIndex = this.bookings.findIndex(b => b.id === bookingId);
+            if (bookingIndex !== -1) {
+              this.$set(this.bookings, bookingIndex, {
+                ...this.bookings[bookingIndex],
+                paymentStatus: 'paid'
+            });
+            }
+            
+            alert('결제가 완료되었습니다.');
+          } else {
+            throw new Error('결제 상태 업데이트 실패');
+          }
         } catch (error) {
           console.error('결제 상태 업데이트 실패:', error);
           alert('결제는 성공했으나 상태 업데이트에 실패했습니다.');
