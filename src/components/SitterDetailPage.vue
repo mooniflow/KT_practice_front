@@ -150,18 +150,25 @@
         }
   
         try {
+          const selectedPet = this.userPets.find(pet => pet.id === this.selectedPetId);
+          
           const bookingData = {
             userId: this.currentUser.id,
-            petId: this.selectedPetId,
             sitterId: this.sitter.id,
             startTime: new Date(`${this.booking.date}T${this.booking.startTime}`).toISOString(),
             endTime: new Date(`${this.booking.date}T${this.booking.endTime}`).toISOString(),
-            service: this.booking.service
+            service: this.booking.service,
+            status: 'PENDING',
+            location: this.sitter.location,
+            price: this.sitter.price,
+            paymentStatus: 'unpaid'
           };
   
+          console.log('Booking Data:', bookingData);
+          
           await axios.post('http://localhost:8080/api/bookings', bookingData);
           alert('예약 요청이 완료되었습니다.');
-          this.$router.push('/my-bookings');
+          this.$router.push({ name: 'MyBookings', params: { bookingInfo: bookingData } });
         } catch (error) {
           console.error('예약 요청 실패:', error);
           alert('예약 요청에 실패했습니다.');

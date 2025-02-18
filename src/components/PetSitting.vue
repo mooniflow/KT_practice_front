@@ -41,6 +41,14 @@
           <p>예약 당일 펫시터와 채팅 기능</p>
         </div>
       </router-link>
+
+      <router-link to="/my-bookings" class="menu-item">
+        <div class="menu-icon">📅</div>
+        <div class="menu-text">
+          <h3>예약 내역</h3>
+          <p>나의 펫시팅 예약 내역 확인</p>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>

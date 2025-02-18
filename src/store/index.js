@@ -5,7 +5,8 @@ export default createStore({
   state: {
     currentUserId: null,
     currentUser: null,
-    cart: []
+    cart: [],
+    bookingInfo: null
   },
   mutations: {
     SET_CURRENT_USER_ID(state, userId) {
@@ -29,6 +30,9 @@ export default createStore({
     },
     REMOVE_FROM_CART(state, productId) {
       state.cart = state.cart.filter(item => item.productId !== productId);
+    },
+    setBookingInfo(state, bookingInfo) {
+      state.bookingInfo = bookingInfo;
     }
   },
   actions: {
@@ -79,6 +83,12 @@ export default createStore({
     },
     removeFromCart({ commit }, productId) {
       commit('REMOVE_FROM_CART', productId);
+    },
+    updateCurrentUser({ commit }, user) {
+      commit('SET_CURRENT_USER', user);
+    },
+    updateBookingInfo({ commit }, bookingInfo) {
+      commit('setBookingInfo', bookingInfo);
     }
   },
   getters: {

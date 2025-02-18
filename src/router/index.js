@@ -18,6 +18,7 @@ import SitterDetailPage from '@/components/SitterDetailPage.vue';
 import BookingChat from '@/components/BookingChat.vue';
 import BookingRequests from '@/components/BookingRequests.vue';
 import ApprovedBookings from '@/components/ApprovedBookings.vue';
+import MyBookings from '@/components/MyBookings.vue';
 
 const routes = [
   {
@@ -152,6 +153,12 @@ const routes = [
     name: 'approved-bookings',
     component: ApprovedBookings,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/my-bookings',
+    name: 'MyBookings',
+    component: MyBookings,
+    props: route => ({ bookingInfo: route.params.bookingInfo })
   }
 ];
 
